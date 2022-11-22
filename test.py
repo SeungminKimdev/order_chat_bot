@@ -36,6 +36,10 @@ responses={
     'timings':'We are open from 9AM to 5PM, Monday to Friday. We are closed on weekends and public holidays.',
     'fallback':'I can not understand',
 }
+global keyNumber
+global isReserve
+keyNumber = 0
+isReserve = 0
 
 from tkinter import *
 
@@ -50,35 +54,80 @@ TEXT_COLOR = "#EAECEE"
 FONT = "Helvetica 14"
 FONT_BOLD = "Helvetica 13 bold"
 
+
 # Send function
 def send(event):
-	send = "You -> " + e.get()
-	txt.insert(END, "\n" + send)
+    global keyNumber
+    global isReserve
+    send = "You -> " + e.get()
+    txt.insert(END, "\n" + send)
 
-	user_input = e.get().lower()
+    user_input = e.get().lower()
+    #quit입력시 종료
+    if user_input == 'quit':
+        root.forget(root)
+    key = 'temp'
+    if isReserve == 0: #예약자 정보가 필요 없는 경우
+        matched_intent = None
+        for intent,pattern in keywords_dict.items():
+            if re.search(pattern, user_input): 
+                matched_intent=intent  
+        key='fallback' 
+        if matched_intent in responses:
+            key = matched_intent
 
-	if user_input == 'quit':
-		root.forget(root)
-	matched_intent = None
-	for intent,pattern in keywords_dict.items():
-        # Using the regular expression search function to look for keywords in user input
-		if re.search(pattern, user_input): 
-            # if a keyword matches, select the corresponding intent from the keywords_dict dictionary
-			matched_intent=intent  
-    # The fallback intent is selected by default
-	key='fallback' 
+    #상황별 질문 관리 responses[key] = 키워드
+    #keyNumer = 0 : 기본 질문 상황, 1 : 예약 신청(이름), 2 : 예약 신청(전화번호) 3:  : 예약 취소, 4 : 순서, 5 : 입장, 6 : 가게 정보
+    if keyNumber == 0: #기본 질문 상황
+        if key == "reservation":
+            txt.insert(END, "\n" + "Bot -> " + responses[key])
+            keyNumber = 1
+            isReserve = 1
+            txt.insert(END, "\n" + "Bot -> 성함을 입력해주세요")
+        elif key == "cancel":
+            txt.insert(END, "\n" + "Bot -> " + responses[key])
+            keyNumber = 3
+        elif key == "order":
+            txt.insert(END, "\n" + "Bot -> " + responses[key])
+            keyNumber = 4
+        elif key == "entrance":
+            txt.insert(END, "\n" + "Bot -> " + responses[key])
+            keyNumber = 5
+        elif key == "information":
+            txt.insert(END, "\n" + "Bot -> " + responses[key])
+            keyNumber = 6
+    elif keyNumber == 1: #예약 신청(이름)
+        txt.insert(END, "\n" + "이름 : " + user_input)
+        keyNumber = 2
+        isReserve = 1
+        txt.insert(END, "\n" + "전화번호를 입력해주세요")
+    elif keyNumber == 2: #예약 신청(전화번호)
+        txt.insert(END, "\n" + "전화번호 : " + user_input)
+        txt.insert(END, "\n" + "예약이 완료되었습니다.")
+        keyNumber = 0
+        isReserve = 0
+    elif keyNumber == 3: #예약 취소
+        txt.insert(END, "\n" + "cancel reservation")
+        keyNumber = 0
+        isReserve = 0
+    elif keyNumber == 4: #순서
+        txt.insert(END, "\n" + "순서")
+        keyNumber = 0
+        isReserve = 0
+    elif keyNumber == 5: #입장
+        txt.insert(END, "\n" + "입장")
+        keyNumber = 0
+        isReserve = 0
+    elif keyNumber == 6: #가게 정보
+        txt.insert(END, "\n" + "가게 정보")
+        keyNumber = 0
+        isReserve = 0
     
-	if matched_intent in responses:
-        # If a keyword matches, the fallback intent is replaced by the matched intent as the key for the responses dictionary
-		key = matched_intent
-    # The chatbot prints the response that matches the selected intent
-	txt.insert(END, "\n" + "Bot -> " + responses[key])
-    
-	e.delete(0, END)
+    e.delete(0, END)
 
 
 lable1 = Label(root, bg=BG_COLOR, fg=TEXT_COLOR, text="Welcome", font=FONT_BOLD, pady=10, width=20, height=1).grid(
-	row=0)
+    row=0)
 
 txt = Text(root, bg=BG_COLOR, fg=TEXT_COLOR, font=FONT, width=60)
 txt.grid(row=1, column=0, columnspan=2)
