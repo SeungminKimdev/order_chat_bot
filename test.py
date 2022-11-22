@@ -1,7 +1,7 @@
 import re
 from nltk.corpus import wordnet
 # Building a list of Keywords
-list_words=['hello','timings']
+list_words=['hello','reservation','cancel','entrance','order','information']
 list_syn={}
 for word in list_words:
     synonyms=[]
@@ -11,6 +11,7 @@ for word in list_words:
             lem_name = re.sub('[^a-zA-Z0-9 \n\.]', ' ', lem.name())
             synonyms.append(lem_name)
     list_syn[word]=set(synonyms)
+print (list_syn)
 
 # Building dictionary of Intents & Keywords
 keywords={}
@@ -21,20 +22,46 @@ keywords['greet']=[]
 for synonym in list(list_syn['hello']):
     keywords['greet'].append('.*\\b'+synonym+'\\b.*')
 
-# Defining a new key in the keywords dictionary
-keywords['timings']=[]
+keywords['reservation']=[]
 # Populating the values in the keywords dictionary with synonyms of keywords formatted with RegEx metacharacters 
-for synonym in list(list_syn['timings']):
-    keywords['timings'].append('.*\\b'+synonym+'\\b.*')
+for synonym in list(list_syn['reservation']):
+    keywords['reservation'].append('.*\\b'+synonym+'\\b.*')
+
+keywords['entrance']=[]
+# Populating the values in the keywords dictionary with synonyms of keywords formatted with RegEx metacharacters 
+for synonym in list(list_syn['entrance']):
+    keywords['entrance'].append('.*\\b'+synonym+'\\b.*')
+
+keywords['cancel']=[]
+# Populating the values in the keywords dictionary with synonyms of keywords formatted with RegEx metacharacters 
+for synonym in list(list_syn['cancel']):
+    keywords['cancel'].append('.*\\b'+synonym+'\\b.*')
+
+keywords['information']=[]
+# Populating the values in the keywords dictionary with synonyms of keywords formatted with RegEx metacharacters 
+for synonym in list(list_syn['information']):
+    keywords['information'].append('.*\\b'+synonym+'\\b.*')
+
+keywords['order']=[]
+# Populating the values in the keywords dictionary with synonyms of keywords formatted with RegEx metacharacters 
+for synonym in list(list_syn['order']):
+    keywords['order'].append('.*\\b'+synonym+'\\b.*')
+    
 for intent, keys in keywords.items():
     # Joining the values in the keywords dictionary with the OR (|) operator updating them in keywords_dict dictionary
     keywords_dict[intent]=re.compile('|'.join(keys))
 print (keywords_dict)
+
+
 # Building a dictionary of responses
 responses={
     'greet':'Hello! How can I help you?',
-    'timings':'We are open from 9AM to 5PM, Monday to Friday. We are closed on weekends and public holidays.',
-    'fallback':'I can not understand',
+    'reservation':'Thank you for visiting',
+    'cancel':'Help you cancel your reservation.',
+    'entrance':'Please come in',
+    'order':'Current waiting situation',
+    'information':'This is the store information',
+    'fallback':'I dont quite understand. Could you repeat that?',
 }
 global keyNumber
 global isReserve
@@ -77,25 +104,29 @@ def send(event):
             key = matched_intent
 
     #상황별 질문 관리 responses[key] = 키워드
-    #keyNumer = 0 : 기본 질문 상황, 1 : 예약 신청(이름), 2 : 예약 신청(전화번호) 3:  : 예약 취소, 4 : 순서, 5 : 입장, 6 : 가게 정보
     if keyNumber == 0: #기본 질문 상황
-        if key == "reservation":
+        if key == "greet":
+            txt.insert(END, "\n" + "Bot -> " + responses[key])
+        elif key == "reservation":
             txt.insert(END, "\n" + "Bot -> " + responses[key])
             keyNumber = 1
             isReserve = 1
             txt.insert(END, "\n" + "Bot -> 성함을 입력해주세요")
         elif key == "cancel":
             txt.insert(END, "\n" + "Bot -> " + responses[key])
+            txt.insert(END, "\n" + "cancel reservation")
             keyNumber = 3
+            isReserve = 1
+            txt.insert(END, "\n" + "Bot -> 성함을 입력해주세요")
         elif key == "order":
             txt.insert(END, "\n" + "Bot -> " + responses[key])
-            keyNumber = 4
+            txt.insert(END, "\n" + "순서")
         elif key == "entrance":
             txt.insert(END, "\n" + "Bot -> " + responses[key])
-            keyNumber = 5
+            txt.insert(END, "\n" + "입장")
         elif key == "information":
             txt.insert(END, "\n" + "Bot -> " + responses[key])
-            keyNumber = 6
+            txt.insert(END, "\n" + "가게 정보")
     elif keyNumber == 1: #예약 신청(이름)
         txt.insert(END, "\n" + "이름 : " + user_input)
         keyNumber = 2
@@ -106,20 +137,14 @@ def send(event):
         txt.insert(END, "\n" + "예약이 완료되었습니다.")
         keyNumber = 0
         isReserve = 0
-    elif keyNumber == 3: #예약 취소
-        txt.insert(END, "\n" + "cancel reservation")
-        keyNumber = 0
-        isReserve = 0
-    elif keyNumber == 4: #순서
-        txt.insert(END, "\n" + "순서")
-        keyNumber = 0
-        isReserve = 0
-    elif keyNumber == 5: #입장
-        txt.insert(END, "\n" + "입장")
-        keyNumber = 0
-        isReserve = 0
-    elif keyNumber == 6: #가게 정보
-        txt.insert(END, "\n" + "가게 정보")
+    elif keyNumber == 3: #예약 취소(이름)
+        txt.insert(END, "\n" + "이름 : " + user_input)
+        keyNumber = 4
+        isReserve = 1
+        txt.insert(END, "\n" + "전화번호를 입력해주세요")
+    elif keyNumber == 4: #예약 취소(전화번호)
+        txt.insert(END, "\n" + "전화번호 : " + user_input)
+        txt.insert(END, "\n" + "취소가 완료되었습니다.")
         keyNumber = 0
         isReserve = 0
     
