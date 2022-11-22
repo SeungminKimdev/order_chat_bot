@@ -34,7 +34,7 @@ print (keywords_dict)
 responses={
     'greet':'Hello! How can I help you?',
     'timings':'We are open from 9AM to 5PM, Monday to Friday. We are closed on weekends and public holidays.',
-    'fallback':'I dont quite understand. Could you repeat that?',
+    'fallback':'I can not understand',
 }
 
 from tkinter import *
@@ -51,11 +51,12 @@ FONT = "Helvetica 14"
 FONT_BOLD = "Helvetica 13 bold"
 
 # Send function
-def send():
+def send(event):
 	send = "You -> " + e.get()
 	txt.insert(END, "\n" + send)
 
 	user_input = e.get().lower()
+
 	if user_input == 'quit':
 		root.forget(root)
 	matched_intent = None
@@ -72,6 +73,7 @@ def send():
 		key = matched_intent
     # The chatbot prints the response that matches the selected intent
 	txt.insert(END, "\n" + "Bot -> " + responses[key])
+    
 	e.delete(0, END)
 
 
@@ -87,7 +89,5 @@ scrollbar.place(relheight=1, relx=0.974)
 e = Entry(root, bg="#2C3E50", fg=TEXT_COLOR, font=FONT, width=55)
 e.grid(row=2, column=0)
 
-send = Button(root, text="Send", font=FONT_BOLD, bg=BG_GRAY,
-			command=send).grid(row=2, column=1)
-
+root.bind('<Return>', send)
 root.mainloop()
