@@ -34,7 +34,7 @@ print (keywords_dict)
 responses={
     'greet':'Hello! How can I help you?',
     'timings':'We are open from 9AM to 5PM, Monday to Friday. We are closed on weekends and public holidays.',
-    'fallback':'I dont quite understand. Could you repeat that?',
+    'fallback':'I can not understand',
 }
 
 from tkinter import *
