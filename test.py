@@ -63,10 +63,15 @@ responses={
     'information':'This is the store information',
     'fallback':'I dont quite understand. Could you repeat that?',
 }
-global keyNumber
-global isReserve
+
+import linked_list
+customers = linked_list.LinkedList()
+
+global keyNumber, isReserve, cusName, cusNumber
 keyNumber = 0
 isReserve = 0
+cusName = ""
+cusNumber = ""
 
 from tkinter import *
 
@@ -84,8 +89,7 @@ FONT_BOLD = "Helvetica 13 bold"
 
 # Send function
 def send(event):
-    global keyNumber
-    global isReserve
+    global keyNumber, isReserve, cusName, cusNumber
     send = "You -> " + e.get()
     txt.insert(END, "\n" + send)
 
@@ -105,46 +109,70 @@ def send(event):
 
     #상황별 질문 관리 responses[key] = 키워드
     if keyNumber == 0: #기본 질문 상황
-        if key == "greet":
+        if key == "greet": #인사
             txt.insert(END, "\n" + "Bot -> " + responses[key])
-        elif key == "reservation":
+        elif key == "reservation": #예약
             txt.insert(END, "\n" + "Bot -> " + responses[key])
             keyNumber = 1
             isReserve = 1
             txt.insert(END, "\n" + "Bot -> 성함을 입력해주세요")
-        elif key == "cancel":
+        elif key == "cancel": #취소
             txt.insert(END, "\n" + "Bot -> " + responses[key])
-            txt.insert(END, "\n" + "cancel reservation")
             keyNumber = 3
             isReserve = 1
             txt.insert(END, "\n" + "Bot -> 성함을 입력해주세요")
-        elif key == "order":
+        elif key == "order": #순서
             txt.insert(END, "\n" + "Bot -> " + responses[key])
-            txt.insert(END, "\n" + "순서")
-        elif key == "entrance":
+            keyNumber = 5
+            isReserve = 1
+            txt.insert(END, "\n" + "Bot -> 성함을 입력해주세요")
+        elif key == "entrance": #입장
             txt.insert(END, "\n" + "Bot -> " + responses[key])
-            txt.insert(END, "\n" + "입장")
-        elif key == "information":
+            txt.insert(END, "\n" + "입장자 정보 : " + customers.entry())
+        elif key == "information": #가계 정보
             txt.insert(END, "\n" + "Bot -> " + responses[key])
-            txt.insert(END, "\n" + "가게 정보")
+        else:
+            txt.insert(END, "\n" + "다시 한번 입력해주세요")
     elif keyNumber == 1: #예약 신청(이름)
         txt.insert(END, "\n" + "이름 : " + user_input)
+        cusName = user_input
         keyNumber = 2
         isReserve = 1
         txt.insert(END, "\n" + "전화번호를 입력해주세요")
     elif keyNumber == 2: #예약 신청(전화번호)
         txt.insert(END, "\n" + "전화번호 : " + user_input)
+        cusNumber = user_input
+        customers.add(linked_list.Node(cusName,cusNumber))
         txt.insert(END, "\n" + "예약이 완료되었습니다.")
         keyNumber = 0
         isReserve = 0
     elif keyNumber == 3: #예약 취소(이름)
         txt.insert(END, "\n" + "이름 : " + user_input)
+        cusName = user_input
         keyNumber = 4
         isReserve = 1
         txt.insert(END, "\n" + "전화번호를 입력해주세요")
     elif keyNumber == 4: #예약 취소(전화번호)
         txt.insert(END, "\n" + "전화번호 : " + user_input)
+        cusNumber = user_input
+        customers.delete(cusName, cusNumber)
         txt.insert(END, "\n" + "취소가 완료되었습니다.")
+        keyNumber = 0
+        isReserve = 0
+    elif keyNumber == 5: #순서 찾기(이름)
+        txt.insert(END, "\n" + "이름 : " + user_input)
+        cusName = user_input
+        keyNumber = 6
+        isReserve = 1
+        txt.insert(END, "\n" + "전화번호를 입력해주세요")
+    elif keyNumber == 6: #순서 찾기(전화번호)
+        txt.insert(END, "\n" + "전화번호 : " + user_input)
+        cusNumber = user_input
+        cusCount = str(customers.get_count(cusName, cusNumber))
+        if cusCount == -1:
+            txt.insert(END, "\n" + "해당 고객님의 정보가 존재하지 않습니다.")
+        else:
+            txt.insert(END, "\n" + "고객님의 현재 대기번호는 : " + cusCount)
         keyNumber = 0
         isReserve = 0
     
