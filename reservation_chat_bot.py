@@ -113,66 +113,83 @@ def send(event):
             txt.insert(END, "\n" + "Bot -> " + responses[key])
         elif key == "reservation": #예약
             txt.insert(END, "\n" + "Bot -> " + responses[key])
+            txt.see(END)
             keyNumber = 1
             isReserve = 1
             txt.insert(END, "\n" + "Bot -> 성함을 입력해주세요")
         elif key == "cancel": #취소
             txt.insert(END, "\n" + "Bot -> " + responses[key])
+            txt.see(END)
             keyNumber = 3
             isReserve = 1
             txt.insert(END, "\n" + "Bot -> 성함을 입력해주세요")
         elif key == "order": #순서
             txt.insert(END, "\n" + "Bot -> " + responses[key])
+            txt.see(END)
             keyNumber = 5
             isReserve = 1
             txt.insert(END, "\n" + "Bot -> 성함을 입력해주세요")
         elif key == "entrance": #입장
             txt.insert(END, "\n" + "Bot -> " + responses[key])
+            txt.see(END)
             txt.insert(END, "\n" + "입장자 정보 : " + customers.entry())
         elif key == "information": #가계 정보
             txt.insert(END, "\n" + "Bot -> " + responses[key])
         else:
             txt.insert(END, "\n" + "다시 한번 입력해주세요")
+        txt.see(END)
     elif keyNumber == 1: #예약 신청(이름)
         txt.insert(END, "\n" + "이름 : " + user_input)
+        txt.see(END)
         cusName = user_input
         keyNumber = 2
         isReserve = 1
         txt.insert(END, "\n" + "전화번호를 입력해주세요")
+        txt.see(END)
     elif keyNumber == 2: #예약 신청(전화번호)
         txt.insert(END, "\n" + "전화번호 : " + user_input)
+        txt.see(END)
         cusNumber = user_input
         customers.add(linked_list.Node(cusName,cusNumber))
         txt.insert(END, "\n" + "예약이 완료되었습니다.")
+        txt.see(END)
         keyNumber = 0
         isReserve = 0
     elif keyNumber == 3: #예약 취소(이름)
         txt.insert(END, "\n" + "이름 : " + user_input)
+        txt.see(END)
         cusName = user_input
         keyNumber = 4
         isReserve = 1
         txt.insert(END, "\n" + "전화번호를 입력해주세요")
+        txt.see(END)
     elif keyNumber == 4: #예약 취소(전화번호)
         txt.insert(END, "\n" + "전화번호 : " + user_input)
+        txt.see(END)
         cusNumber = user_input
         customers.delete(cusName, cusNumber)
         txt.insert(END, "\n" + "취소가 완료되었습니다.")
+        txt.see(END)
         keyNumber = 0
         isReserve = 0
     elif keyNumber == 5: #순서 찾기(이름)
         txt.insert(END, "\n" + "이름 : " + user_input)
+        txt.see(END)
         cusName = user_input
         keyNumber = 6
         isReserve = 1
         txt.insert(END, "\n" + "전화번호를 입력해주세요")
+        txt.see(END)
     elif keyNumber == 6: #순서 찾기(전화번호)
         txt.insert(END, "\n" + "전화번호 : " + user_input)
+        txt.see(END)
         cusNumber = user_input
         cusCount = str(customers.get_count(cusName, cusNumber))
-        if cusCount == -1:
+        if cusCount == '-1':
             txt.insert(END, "\n" + "해당 고객님의 정보가 존재하지 않습니다.")
         else:
             txt.insert(END, "\n" + "고객님의 현재 대기번호는 : " + cusCount)
+        txt.see(END)
         keyNumber = 0
         isReserve = 0
     
