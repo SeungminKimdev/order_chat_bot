@@ -74,6 +74,7 @@ cusName = ""
 cusNumber = ""
 
 from tkinter import *
+import tkinter as tk
 
 # GUI
 root = Tk()
@@ -132,7 +133,10 @@ def send(event):
         elif key == "entrance": #입장
             txt.insert(END, "\n" + "Bot -> " + responses[key])
             txt.see(END)
-            txt.insert(END, "\n" + "입장자 정보 : " + customers.entry())
+            tempName = customers.entry()
+            txt.insert(END, "\n" + "입장자 정보 : " + tempName)
+            enterance.delete("1.0",END)
+            enterance.insert(END,tempName,'center')
         elif key == "information": #가계 정보
             txt.insert(END, "\n" + "Bot -> " + responses[key])
         else:
@@ -196,17 +200,20 @@ def send(event):
     e.delete(0, END)
 
 
-lable1 = Label(root, bg=BG_COLOR, fg=TEXT_COLOR, text="Welcome", font=FONT_BOLD, pady=10, width=20, height=1).grid(
-    row=0)
+lable1 = Label(root, bg=BG_COLOR, fg=TEXT_COLOR, text="Entrance", font=FONT_BOLD, pady=10 , width=10, height=1).grid(
+    row=0,column=0)
+enterance = Text(root,bg="#FFFFFF",fg="#000000", font=FONT_BOLD, pady= 10, width=50, height=1)
+enterance.grid(row=0,column=1)
+enterance.tag_configure("center", justify='center')
 
 txt = Text(root, bg=BG_COLOR, fg=TEXT_COLOR, font=FONT, width=60)
-txt.grid(row=1, column=0, columnspan=2)
+txt.grid(row = 1, column = 0, columnspan = 2, sticky=tk.W+tk.E+tk.N+tk.S)
 
 scrollbar = Scrollbar(txt)
 scrollbar.place(relheight=1, relx=0.974)
 
 e = Entry(root, bg="#2C3E50", fg=TEXT_COLOR, font=FONT, width=55)
-e.grid(row=2, column=0)
+e.grid(row = 2, column = 0, columnspan = 2, sticky=tk.W+tk.E+tk.N+tk.S)
 
 root.bind('<Return>', send)
 root.mainloop()
