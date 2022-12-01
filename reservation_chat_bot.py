@@ -131,12 +131,16 @@ def send(event):
             isReserve = 1
             txt.insert(END, "\n" + "Bot -> 성함을 입력해주세요")
         elif key == "entrance": #입장
-            txt.insert(END, "\n" + "Bot -> " + responses[key])
-            txt.see(END)
             tempName = customers.entry()
-            txt.insert(END, "\n" + "입장자 정보 : " + tempName)
-            enterance.delete("1.0",END)
-            enterance.insert(END,tempName,'center')
+            if tempName == "-1":
+                txt.insert(END, "\n" + "예약 정보가 없습니다.")
+                txt.see(END)
+            else:
+                txt.insert(END, "\n" + "Bot -> " + responses[key])
+                txt.see(END)
+                txt.insert(END, "\n" + "입장자 정보 : " + tempName)
+                enterance.delete("1.0",END)
+                enterance.insert(END,tempName,'center')
         elif key == "information": #가계 정보
             txt.insert(END, "\n" + "Bot -> " + responses[key])
         else:
