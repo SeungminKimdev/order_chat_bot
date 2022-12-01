@@ -56,23 +56,14 @@ print (keywords_dict)
 # Building a dictionary of responses
 responses={
     'greet':'Hello! How can I help you?',
-<<<<<<< HEAD
-<<<<<<< HEAD
     'timings':'We are open from 9AM to 5PM, Monday to Friday. We are closed on weekends and public holidays.',
     'fallback':'I can not understand',
-=======
-=======
->>>>>>> jh
     'reservation':'Thank you for visiting',
     'cancel':'Help you cancel your reservation.',
     'entrance':'Please come in',
     'order':'Current waiting situation',
     'information':'This is the store information',
     'fallback':'I dont quite understand. Could you repeat that?',
-<<<<<<< HEAD
->>>>>>> main
-=======
->>>>>>> jh
 }
 
 import linked_list
@@ -100,41 +91,35 @@ FONT_BOLD = "Helvetica 13 bold"
 
 # Send function
 def send(event):
-<<<<<<< HEAD
-<<<<<<<< HEAD:reservation_chat_bot.py
     global keyNumber, isReserve, cusName, cusNumber
-========
-<<<<<<< HEAD
-	send = "You -> " + e.get()
-	txt.insert(END, "\n" + send)
+    send = "You -> " + e.get()
+    txt.insert(END, "\n" + send)
 
-	user_input = e.get().lower()
+    user_input = e.get().lower()
 
-	if user_input == 'quit':
-		root.forget(root)
-	matched_intent = None
-	for intent,pattern in keywords_dict.items():
+    if user_input == 'quit':
+        root.forget(root)
+    matched_intent = None
+    for intent,pattern in keywords_dict.items():
         # Using the regular expression search function to look for keywords in user input
-		if re.search(pattern, user_input): 
+        if re.search(pattern, user_input): 
             # if a keyword matches, select the corresponding intent from the keywords_dict dictionary
-			matched_intent=intent  
+            matched_intent=intent  
     # The fallback intent is selected by default
-	key='fallback' 
+    key='fallback' 
     
-	if matched_intent in responses:
+    if matched_intent in responses:
         # If a keyword matches, the fallback intent is replaced by the matched intent as the key for the responses dictionary
-		key = matched_intent
+        key = matched_intent
     # The chatbot prints the response that matches the selected intent
-	txt.insert(END, "\n" + "Bot -> " + responses[key])
+    txt.insert(END, "\n" + "Bot -> " + responses[key])
     
-	e.delete(0, END)
-=======
+    e.delete(0, END)
+
     global keyNumber
     global isReserve
->>>>>>>> jh:test.py
-=======
     global keyNumber, isReserve, cusName, cusNumber
->>>>>>> jh
+    
     send = "You -> " + e.get()
     txt.insert(END, "\n" + send)
 
@@ -158,62 +143,53 @@ def send(event):
             txt.insert(END, "\n" + "Bot -> " + responses[key])
         elif key == "reservation": #예약
             txt.insert(END, "\n" + "Bot -> " + responses[key])
-<<<<<<< HEAD
-=======
             txt.see(END)
->>>>>>> jh
             keyNumber = 1
             isReserve = 1
             txt.insert(END, "\n" + "Bot -> 성함을 입력해주세요")
         elif key == "cancel": #취소
             txt.insert(END, "\n" + "Bot -> " + responses[key])
-<<<<<<< HEAD
-=======
             txt.see(END)
->>>>>>> jh
+
             keyNumber = 3
             isReserve = 1
             txt.insert(END, "\n" + "Bot -> 성함을 입력해주세요")
         elif key == "order": #순서
             txt.insert(END, "\n" + "Bot -> " + responses[key])
-<<<<<<< HEAD
-=======
+
             txt.see(END)
->>>>>>> jh
+
             keyNumber = 5
             isReserve = 1
             txt.insert(END, "\n" + "Bot -> 성함을 입력해주세요")
         elif key == "entrance": #입장
             txt.insert(END, "\n" + "Bot -> " + responses[key])
-<<<<<<< HEAD
-=======
+
             txt.see(END)
->>>>>>> jh
+
             txt.insert(END, "\n" + "입장자 정보 : " + customers.entry())
         elif key == "information": #가계 정보
             txt.insert(END, "\n" + "Bot -> " + responses[key])
         else:
             txt.insert(END, "\n" + "다시 한번 입력해주세요")
-<<<<<<< HEAD
-    elif keyNumber == 1: #예약 신청(이름)
-        txt.insert(END, "\n" + "이름 : " + user_input)
-=======
-        txt.see(END)
+
     elif keyNumber == 1: #예약 신청(이름)
         txt.insert(END, "\n" + "이름 : " + user_input)
         txt.see(END)
->>>>>>> jh
+    elif keyNumber == 1: #예약 신청(이름)
+        txt.insert(END, "\n" + "이름 : " + user_input)
+        txt.see(END)
         cusName = user_input
         keyNumber = 2
         isReserve = 1
         txt.insert(END, "\n" + "전화번호를 입력해주세요")
-<<<<<<< HEAD
+
     elif keyNumber == 2: #예약 신청(전화번호)
         txt.insert(END, "\n" + "전화번호 : " + user_input)
         cusNumber = user_input
         customers.add(linked_list.Node(cusName,cusNumber))
         txt.insert(END, "\n" + "예약이 완료되었습니다.")
-=======
+
         txt.see(END)
     elif keyNumber == 2: #예약 신청(전화번호)
         txt.insert(END, "\n" + "전화번호 : " + user_input)
@@ -222,26 +198,25 @@ def send(event):
         customers.add(linked_list.Node(cusName,cusNumber))
         txt.insert(END, "\n" + "예약이 완료되었습니다.")
         txt.see(END)
->>>>>>> jh
+
         keyNumber = 0
         isReserve = 0
     elif keyNumber == 3: #예약 취소(이름)
         txt.insert(END, "\n" + "이름 : " + user_input)
-<<<<<<< HEAD
-=======
+
         txt.see(END)
->>>>>>> jh
+
         cusName = user_input
         keyNumber = 4
         isReserve = 1
         txt.insert(END, "\n" + "전화번호를 입력해주세요")
-<<<<<<< HEAD
+
     elif keyNumber == 4: #예약 취소(전화번호)
         txt.insert(END, "\n" + "전화번호 : " + user_input)
         cusNumber = user_input
         customers.delete(cusName, cusNumber)
         txt.insert(END, "\n" + "취소가 완료되었습니다.")
-=======
+
         txt.see(END)
     elif keyNumber == 4: #예약 취소(전화번호)
         txt.insert(END, "\n" + "전화번호 : " + user_input)
@@ -250,20 +225,20 @@ def send(event):
         customers.delete(cusName, cusNumber)
         txt.insert(END, "\n" + "취소가 완료되었습니다.")
         txt.see(END)
->>>>>>> jh
+
         keyNumber = 0
         isReserve = 0
     elif keyNumber == 5: #순서 찾기(이름)
         txt.insert(END, "\n" + "이름 : " + user_input)
-<<<<<<< HEAD
-=======
+
+
         txt.see(END)
->>>>>>> jh
+
         cusName = user_input
         keyNumber = 6
         isReserve = 1
         txt.insert(END, "\n" + "전화번호를 입력해주세요")
-<<<<<<< HEAD
+
     elif keyNumber == 6: #순서 찾기(전화번호)
         txt.insert(END, "\n" + "전화번호 : " + user_input)
         cusNumber = user_input
@@ -272,7 +247,7 @@ def send(event):
             txt.insert(END, "\n" + "해당 고객님의 정보가 존재하지 않습니다.")
         else:
             txt.insert(END, "\n" + "고객님의 현재 대기번호는 : " + cusCount)
-=======
+
         txt.see(END)
     elif keyNumber == 6: #순서 찾기(전화번호)
         txt.insert(END, "\n" + "전화번호 : " + user_input)
@@ -284,16 +259,11 @@ def send(event):
         else:
             txt.insert(END, "\n" + "고객님의 현재 대기번호는 : " + cusCount)
         txt.see(END)
->>>>>>> jh
+
         keyNumber = 0
         isReserve = 0
     
     e.delete(0, END)
-<<<<<<< HEAD
->>>>>>> main
-=======
->>>>>>> jh
-
 
 lable1 = Label(root, bg=BG_COLOR, fg=TEXT_COLOR, text="Welcome", font=FONT_BOLD, pady=10, width=20, height=1).grid(
     row=0)
@@ -308,12 +278,4 @@ e = Entry(root, bg="#2C3E50", fg=TEXT_COLOR, font=FONT, width=55)
 e.grid(row=2, column=0)
 
 root.bind('<Return>', send)
-<<<<<<< HEAD
-<<<<<<< HEAD
 root.mainloop()
-=======
-root.mainloop()
->>>>>>> main
-=======
-root.mainloop()
->>>>>>> jh
