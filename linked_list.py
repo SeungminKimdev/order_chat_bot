@@ -53,6 +53,8 @@ class LinkedList:
     
     def entry(self):
         cur = self.head
+        if cur == None:
+            return "-1"
         name = cur.name            
         self.head = self.head.next
         return name
